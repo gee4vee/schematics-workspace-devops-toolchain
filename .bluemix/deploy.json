@@ -77,9 +77,7 @@
             "widths": ["25%", "25%", "25%", "25%"],
             "items": [{
                     "type": "label",
-                    "title": {
-                        "$ref": "#/messages/region"
-                    }
+                    "title": "Region"
                 }, {
                     "type": "label",
                     "title": ""
