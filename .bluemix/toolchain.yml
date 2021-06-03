@@ -67,13 +67,9 @@ services:
           APP_NAME: "{{form.pipeline.parameters.app-name}}"
           ARTIFACTORY_DOCKER_CONFIG_JSON: '{{form.artifactoryComp.parameters.docker_config_json}}'
           PRIVATE_WORKER: '{{services.privateWorker.parameters.name}}'
-          REGISTRY_REGION_ID: "{{form.pipeline.parameters.registry-region}}"
-          REGISTRY_NAMESPACE: "{{form.pipeline.parameters.registry-namespace}}"
           API_KEY: "{{form.pipeline.parameters.api-key}}"
           PROD_REGION_ID: "{{form.pipeline.parameters.prod-region}}"
           PROD_RESOURCE_GROUP: "{{form.pipeline.parameters.prod-resource-group}}"
-          PROD_CLUSTER_NAME: "{{form.pipeline.parameters.prod-cluster-name}}"
-          PROD_CLUSTER_NAMESPACE: "{{form.pipeline.parameters.prod-cluster-namespace}}"
           APP_REPO_FULL: >
             if ( $env.source_provider === 'githubconsolidated' ) {
               "https://github.com/{{services.repo.parameters.owner_id}}/{{services.repo.parameters.repo_name}}";
@@ -118,15 +114,8 @@ form:
         $env.workspaceId ? '{{workspaceId}}' : "12345"
       terraform-request: >
         $env.terraformRequest ? '{{terraformRequest}}' : ''
-      prod-cluster-namespace: >
-        $env.prodClusterNamespace ? "{{prodClusterNamespace}}" : "default"
-      registry-region: '{{registryRegion}}'
-      registry-namespace: '{{registryNamespace}}'
       api-key: '{{apiKey}}'
       prod-region: '{{prodRegion}}'
       prod-resource-group: '{{prodResourceGroup}}'
-      prod-cluster-name: '{{prodClusterName}}'
-      prod-space: '{{prodSpace}}'
-      prod-organization: '{{prodOrganization}}'
     schema:
       $ref: deploy.json

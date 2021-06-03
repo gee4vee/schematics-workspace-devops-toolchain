@@ -16,46 +16,12 @@ spec:
       default: ""
     - name: workspace-id
       description: Schematics Workspace ID
-    - name: fail-on-lint-errors
-      description: force failure of task when docker lint errors are found
-      default: "true"
-    - name: fail-on-scanned-issues
-      description: force failure of task when vulnerability advisor scan issues are found
-      default: "true"
-    - name: path-to-context
-      default: "."
-    - name: path-to-dockerfile
-      default: "."
-    - name: dockerfile
-      default: "Dockerfile"
-    - name: build-args
-      description: ibmcloud cr build argument list in the format 'KEY=VALUE' with a key-value pair per line.
-      default: ""
-    - name: registry-region
-      description: The IBM Cloud region for image registry
-    - name: registry-namespace
-      description: container registry namespace
-    - name: registry-create-namespace
-      description: create container registry namespace if it doesn't already exists
-      default: "true"
     - name: app-name
       description: application name
     - name: image-name
       description: image name
-    - name: helm-chart-path
-      description: |
-        path to the folder containing the helm chart content (at least Chart.yaml).
-        If not specified, it will default to first folder in /chart
-      default: ""
     - name: dev-region
     - name: dev-resource-group
-    - name: cluster-name
-      description: the name of the cluster to target
-    - name: dev-cluster-namespace
-      description: the namespace
-    - name: helm-upgrade-extra-args
-      description: complementary argument for the helm upgrade command
-      default: ""
     - name: pipeline-debug
       default: "0"
   workspaces:
