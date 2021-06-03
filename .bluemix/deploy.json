@@ -73,8 +73,8 @@
             "key": "api-key"
         }, {
             "type": "table",
-            "columnCount": 7,
-            "widths": ["24%", "2%", "24%", "3%", "23%", "1%", "23%"],
+            "columnCount": 4,
+            "widths": ["25%", "25%", "25%", "25%"],
             "items": [{
                     "type": "label",
                     "title": {
