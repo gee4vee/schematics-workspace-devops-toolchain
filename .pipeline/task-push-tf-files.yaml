@@ -1,0 +1,108 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: schematics-workspace-setup
+spec:
+  params:
+    - name: repository
+      description: The git repo
+    - name: branch
+      description: the branch for the git repo
+      default: "master"
+    - name: revision
+      description: the git revision/commit for the git repo
+      default: ""
+    - name: workspace-id
+      description: Schematics Workspace ID
+    - name: terraform-request
+      description: The Terraform request body
+    - name: app-name
+      description: application name
+    - name: console-solutions-api
+      description: The endpoint URL for the Console Solutions API
+      default: "https://dev.console.test.cloud.ibm.com/conapi/solutions"
+    - name: image-name
+      description: image name
+    - name: pipeline-debug
+      default: "0"
+  results:
+    - name: repo-url
+      description: The URL of the repo containing the terraform template files
+  workspaces:
+    - name: artifacts
+      description: A workspace
+      mountPath: /artifacts
+  steps:
+    - name: push-tf-template-files
+      image: ibmcom/pipeline-base-image:2.12
+      workingDir: /artifacts
+      env:
+        - name: repository
+          value: $(params.repository)
+        - name: branch
+          value: $(params.branch)
+        - name: revision
+          value: $(params.revision)
+        - name: workspace-id
+          value: $(params.workspace-id)
+        - name: terraform-request
+          value: $(params.terraform-request)
+        - name: app-name
+          value: $(params.app-name)
+        - name: image-name
+          value: $(params.image-name)
+        - name: PIPELINE_DEBUG
+          value: $(params.pipeline-debug)
+        - name: PIPELINE_RUN_URL
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.annotations['devops.cloud.ibm.com/pipeline-run-url']
+        - name: CONSOLE_SOLUTIONS_API
+          value: $(params.console-solutions-api)
+      script: |
+        #!/bin/bash
+        set -e -o pipefail
+
+        if [ $PIPELINE_DEBUG == 1 ]; then
+            env
+            pwd
+            ls -l
+            trap env EXIT
+            set -x
+        fi
+
+        ZIP_NAME="tf-template.zip"
+
+        # d/l the terraform template files from console solutions API
+        cd /artifacts/schematics-workspace-$(params.workspace-id)
+        TOKEN=$(ibmcloud iam oauth-tokens --output JSON | jq -r '.iam_token')
+        curl -X 'POST' '$CONSOLE_SOLUTIONS_API/template/zip?schematics=true&terraformer_request=$(params.terraform-request)' \
+          -H 'accept: application/zip' -H 'Authorization: $TOKEN' --output $ZIP_NAME
+        unzip $ZIP_NAME
+        rm ./$ZIP_NAME
+
+        # push files to the repository
+        git add *
+        git commit -m "feat: terraform template files for workspace $(params.workspace-id)"
+        git push
+
+        # Record task results
+        echo -n "$(params.repository)" > $(results.repo-url.path)
+      volumeMounts:
+        - mountPath: /cd-config
+          name: cd-config-volume
+        - mountPath: /steps
+          name: steps-volume
+        - mountPath: /artifacts/_toolchain.json
+          subPath: toolchain.json
+          name: cd-config-volume
+  volumes:
+    - name: steps-volume
+      emptyDir: {}
+    - name: cd-config-volume
+      configMap:
+        name: toolchain
+        items:
+          - key: toolchain.json
+            path: toolchain.json
