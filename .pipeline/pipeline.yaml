@@ -18,6 +18,8 @@ spec:
       description: The IBM Cloud API key
     - name: workspace-id
       description: Schematics Workspace ID
+    - name: terraform-request
+      description: The Terraform request body
     - name: app-name
       description: application name
     - name: image-name
@@ -77,6 +79,8 @@ spec:
           value: $(params.dev-resource-group)
         - name: workspace-id
           value: $(params.workspace-id)
+        - name: terraform-request
+          value: $(params.terraform-request)
         - name: app-name
           value: $(params.app-name)
         - name: image-name
