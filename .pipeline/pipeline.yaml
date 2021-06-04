@@ -5,6 +5,9 @@ metadata:
   name: schematics-workspace-pipeline
 spec:
   params:
+    - name: ibmcloud-api
+      description: the ibmcloud api
+      default: https://cloud.ibm.com
     - name: repository
       description: the git repo containing source code. If empty, the repository url will be found from toolchain
       default: ""
@@ -65,6 +68,8 @@ spec:
       taskRef:
         name: schematics-workspace-setup
       params:
+        - name: ibmcloud-api
+          value: $(params.ibmcloud-api)
         - name: repository
           value: $(tasks.git-clone.results.git-repository)
         - name: branch

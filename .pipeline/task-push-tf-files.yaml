@@ -5,6 +5,9 @@ metadata:
   name: schematics-workspace-setup
 spec:
   params:
+    - name: ibmcloud-api
+      description: the ibmcloud api
+      default: https://cloud.ibm.com
     - name: repository
       description: The git repo
     - name: branch
@@ -42,6 +45,8 @@ spec:
       image: ibmcom/pipeline-base-image:2.12
       workingDir: /artifacts
       env:
+        - name: ibmcloud-api
+          value: $(params.ibmcloud-api)
         - name: repository
           value: $(params.repository)
         - name: branch
@@ -85,7 +90,7 @@ spec:
         ZIP_NAME="tf-template.zip"
 
         # log into staging
-        ibmcloud login -a https://test.cloud.ibm.com -r $(params.dev-region) -g $(params.dev-resource-group) --apikey $$(params.apikey)
+        ibmcloud login -a $(params.ibmcloud-api) -r $(params.dev-region) -g $(params.dev-resource-group) --apikey $$(params.apikey)
         TOKEN=$(ibmcloud iam oauth-tokens --output JSON | jq -r '.iam_token')
 
         # d/l the terraform template files from console solutions API

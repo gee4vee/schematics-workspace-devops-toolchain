@@ -5,6 +5,9 @@ metadata:
   name: trigger-template-schematics-workspace
 spec:
   params:
+    - name: ibmcloud-api
+      description: the ibmcloud api
+      default: https://cloud.ibm.com
     - name: repository
       description: The git repo
     - name: branch
@@ -47,6 +50,8 @@ spec:
         pipelineRef:
           name: schematics-workspace-pipeline
         params:
+          - name: ibmcloud-api
+            value: $(params.ibmcloud-api)
           - name: repository
             value: $(params.repository)
           - name: branch

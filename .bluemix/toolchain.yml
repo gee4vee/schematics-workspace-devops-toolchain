@@ -65,6 +65,8 @@ services:
         content:
           $text: schematics-workspace-pipeline.yml
         env:
+          IBM_CLOUD_API: >
+            $env.ibmcloudApi ? '{{ibmcloudApi}}' : "https://cloud.ibm.com"
           APP_REPO: repo
           APP_NAME: "{{form.pipeline.parameters.app-name}}"
           ARTIFACTORY_DOCKER_CONFIG_JSON: '{{form.artifactoryComp.parameters.docker_config_json}}'
