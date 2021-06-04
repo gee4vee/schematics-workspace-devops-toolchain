@@ -66,11 +66,11 @@ spec:
         name: schematics-workspace-setup
       params:
         - name: repository
-          value: $(tasks.git-clone-repo.results.git-repository)
+          value: $(tasks.git-clone.results.git-repository)
         - name: branch
-          value: $(tasks.git-clone-repo.results.git-branch)
+          value: $(tasks.git-clone.results.git-branch)
         - name: revision
-          value: $(tasks.git-clone-repo.results.git-commit)
+          value: $(tasks.git-clone.results.git-commit)
         - name: apikey
           value: $(params.apikey)
         - name: dev-region
