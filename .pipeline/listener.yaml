@@ -13,6 +13,8 @@ spec:
     - name: revision
       description: the git revision/commit for the git repo
       default: ""
+    - name: apikey
+      description: The IBM Cloud API key
     - name: workspace-id
       description: Schematics Workspace ID
     - name: terraform-request
@@ -51,6 +53,8 @@ spec:
             value: $(params.branch)
           - name: revision
             value: $(params.revision)
+          - name: apikey
+            value: $(params.apikey)
           - name: workspace-id
             value: $(params.workspace-id)
           - name: terraform-request

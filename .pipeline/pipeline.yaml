@@ -14,6 +14,8 @@ spec:
     - name: revision
       description: the git revision/commit for the git repo
       default: ""
+    - name: apikey
+      description: The IBM Cloud API key
     - name: workspace-id
       description: Schematics Workspace ID
     - name: app-name
@@ -67,6 +69,12 @@ spec:
           value: $(tasks.git-clone-repo.results.git-branch)
         - name: revision
           value: $(tasks.git-clone-repo.results.git-commit)
+        - name: apikey
+          value: $(params.apikey)
+        - name: dev-region
+          value: $(params.dev-region)
+        - name: dev-resource-group
+          value: $(params.dev-resource-group)
         - name: workspace-id
           value: $(params.workspace-id)
         - name: app-name

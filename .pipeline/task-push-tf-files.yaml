@@ -13,6 +13,10 @@ spec:
     - name: revision
       description: the git revision/commit for the git repo
       default: ""
+    - name: apikey
+      description: The IBM Cloud API key
+    - name: dev-region
+    - name: dev-resource-group
     - name: workspace-id
       description: Schematics Workspace ID
     - name: terraform-request
@@ -44,6 +48,12 @@ spec:
           value: $(params.branch)
         - name: revision
           value: $(params.revision)
+        - name: apikey
+          value: $(params.apikey)
+        - name: dev-region
+          value: $(params.dev-region)
+        - name: dev-resource-group
+          value: $(params.dev-resource-group)
         - name: workspace-id
           value: $(params.workspace-id)
         - name: terraform-request
@@ -74,9 +84,12 @@ spec:
 
         ZIP_NAME="tf-template.zip"
 
+        # log into staging
+        ibmcloud login -a https://test.cloud.ibm.com -r $(params.dev-region) -g $(params.dev-resource-group) --apikey $$(params.apikey)
+        TOKEN=$(ibmcloud iam oauth-tokens --output JSON | jq -r '.iam_token')
+
         # d/l the terraform template files from console solutions API
         cd /artifacts/schematics-workspace-$(params.workspace-id)
-        TOKEN=$(ibmcloud iam oauth-tokens --output JSON | jq -r '.iam_token')
         curl -X 'POST' '$CONSOLE_SOLUTIONS_API/template/zip?schematics=true&terraformer_request=$(params.terraform-request)' \
           -H 'accept: application/zip' -H 'Authorization: $TOKEN' --output $ZIP_NAME
         unzip $ZIP_NAME
