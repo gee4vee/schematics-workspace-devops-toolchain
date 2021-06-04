@@ -18,6 +18,7 @@ services:
     parameters:
       repo_name: >
         $env.toolchainName ? '{{toolchainName}}' : 'hello-schematics-{{timestamp}}'
+      # TODO: put this into IBM org
       repo_url: >
         $env.type === 'link' ? $env.app_repo :
           $env.sourceZipUrl ? '{{sourceZipUrl}}' :
@@ -32,8 +33,9 @@ services:
       legal: true
 
   pipeline-repo:
-    service_id: github_integrated
+    service_id: githubconsolidated
     parameters:
+      # TODO: put this into IBM org
       repo_url: "https://github.com/gee4vee/schematics-workspace-devops-toolchain"
       type: 'link'
       has_issues: false
