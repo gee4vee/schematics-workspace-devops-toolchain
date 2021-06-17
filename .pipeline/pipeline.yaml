@@ -72,6 +72,8 @@ spec:
       params:
         - name: ibmcloud-api
           value: $(params.ibmcloud-api)
+        - name: apikey
+          value: $(params.apikey)
         - name: repository
           value: $(tasks.git-clone.results.git-repository)
         - name: branch
