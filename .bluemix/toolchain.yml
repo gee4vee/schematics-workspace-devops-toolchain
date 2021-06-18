@@ -72,6 +72,7 @@ services:
           ARTIFACTORY_DOCKER_CONFIG_JSON: '{{form.artifactoryComp.parameters.docker_config_json}}'
           PRIVATE_WORKER: '{{services.privateWorker.parameters.name}}'
           API_KEY: "{{form.pipeline.parameters.api-key}}"
+          DEVOPS_API_KEY: "{{form.pipeline.parameters.devops-api-key}}"
           PROD_REGION_ID: "{{form.pipeline.parameters.prod-region}}"
           PROD_RESOURCE_GROUP: "{{form.pipeline.parameters.prod-resource-group}}"
           APP_REPO_FULL: >
@@ -119,6 +120,7 @@ form:
       terraform-request: >
         $env.terraformRequest ? '{{terraformRequest}}' : ''
       api-key: '{{apiKey}}'
+      devops-api-key: '{{devOpsApiKey}}'
       prod-region: '{{prodRegion}}'
       prod-resource-group: '{{prodResourceGroup}}'
     schema:
