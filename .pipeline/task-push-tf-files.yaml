@@ -90,7 +90,7 @@ spec:
         ZIP_NAME="tf-template.zip"
 
         # log into staging
-        ibmcloud login -a $(params.ibmcloud-api) -r $(params.dev-region) -g $(params.dev-resource-group) --apikey $$(params.devops-apikey)
+        ibmcloud login -a $(params.ibmcloud-api) -r $(params.dev-region) -g $(params.dev-resource-group) --apikey $(params.devops-apikey)
         TOKEN=$(ibmcloud iam oauth-tokens --output JSON | jq -r '.iam_token')
 
         # d/l the terraform template files from console solutions API
