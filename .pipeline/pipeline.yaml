@@ -82,8 +82,6 @@ spec:
           value: $(tasks.git-clone.results.git-branch)
         - name: revision
           value: $(tasks.git-clone.results.git-commit)
-        - name: apikey
-          value: $(params.apikey)
         - name: dev-region
           value: $(params.dev-region)
         - name: dev-resource-group
