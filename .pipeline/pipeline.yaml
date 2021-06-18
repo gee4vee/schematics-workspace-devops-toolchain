@@ -67,7 +67,7 @@ spec:
         - name: output
           workspace: pipeline-ws
     - name: schematics-workspace-setup
-      runAfter: [git-clone]
+      runAfter: git-clone
       taskRef:
         name: schematics-workspace-setup
       params:
