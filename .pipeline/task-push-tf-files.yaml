@@ -97,7 +97,7 @@ spec:
 
         # d/l the terraform template files from console solutions API
         cd /artifacts/schematics-workspace-$(params.workspace-id)
-        curl -X 'POST' '$CONSOLE_SOLUTIONS_API/template/zip?schematics=true&terraformer_request=$(params.terraform-request)' \
+        curl -X 'POST' "$CONSOLE_SOLUTIONS_API/template/zip?schematics=true&terraformer_request=$(params.terraform-request)" \
           -H 'accept: application/zip' -H 'Authorization: $TOKEN' --output $ZIP_NAME
         unzip $ZIP_NAME
         rm ./$ZIP_NAME
