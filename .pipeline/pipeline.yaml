@@ -19,6 +19,8 @@ spec:
       default: ""
     - name: apikey
       description: The IBM Cloud API key
+    - name: devops-apikey
+      description: The IBM Cloud API key used for toolchain setup
     - name: workspace-id
       description: Schematics Workspace ID
     - name: terraform-request
@@ -74,8 +76,8 @@ spec:
       params:
         - name: ibmcloud-api
           value: $(params.ibmcloud-api)
-        - name: apikey
-          value: $(params.apikey)
+        - name: devops-apikey
+          value: $(params.devops-apikey)
         - name: repository
           value: $(tasks.git-clone.results.git-repository)
         - name: branch
