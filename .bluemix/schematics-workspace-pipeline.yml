@@ -75,3 +75,9 @@ properties:
   - name: terraform-request
     value: ${TERRAFORM_REQUEST}
     type: text
+  - name: pipeline-debug
+    type: single_select
+    value:
+      "0": true
+      "1": false
+    
