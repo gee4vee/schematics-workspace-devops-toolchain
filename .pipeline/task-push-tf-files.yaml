@@ -80,35 +80,40 @@ spec:
         set -e -o pipefail
 
         if [ $PIPELINE_DEBUG == 1 ]; then
-            env
-            pwd
-            ls -l
-            trap env EXIT
-            set -x
+          env
+          pwd
+          ls -l
+          trap env EXIT
+          set -x
         fi
 
         ZIP_NAME="tf-template.zip"
 
-        # log into staging
-        DEV_REGION=$(params.dev-region)
-        DEV_REGION=${DEV_REGION##*:}
-        ibmcloud login -a $(params.ibmcloud-api) -r $DEV_REGION -g $(params.dev-resource-group) --apikey $(params.devops-apikey)
-        TOKEN=$(ibmcloud iam oauth-tokens --output JSON | jq -r '.iam_token')
-
-        # d/l the terraform template files from console solutions API
+        # check if we've already done the initial push. dont re-add files if we have.
         cd /artifacts/schematics-workspace-$(params.workspace-id)
-        curl -X 'POST' "$CONSOLE_SOLUTIONS_API/template/zip?schematics=true&terraformer_request=$(params.terraform-request)" \
-          -H 'accept: application/zip' -H "Authorization: $TOKEN" --output $ZIP_NAME
-        unzip $ZIP_NAME
-        rm ./$ZIP_NAME
+        if [ ! -f main.tf ] && [ ! -f provider.tf ] && ! -f variables.tf ]; then
+          # log into staging
+          DEV_REGION=$(params.dev-region)
+          DEV_REGION=${DEV_REGION##*:}
+          ibmcloud login -a $(params.ibmcloud-api) -r $DEV_REGION -g $(params.dev-resource-group) --apikey $(params.devops-apikey)
+          TOKEN=$(ibmcloud iam oauth-tokens --output JSON | jq -r '.iam_token')
 
-        # push files to the repository
-        mv templateForZip_*/* .
-        git config --global user.email "devops@ibm.com"
-        git config --global user.name "IBM Cloud DevOps Toolchain Pipeline"
-        git add *
-        git commit -m "feat: terraform template files for workspace $(params.workspace-id)"
-        git push
+          # d/l the terraform template files from console solutions API
+          curl -X 'POST' "$CONSOLE_SOLUTIONS_API/template/zip?schematics=true&terraformer_request=$(params.terraform-request)" \
+            -H 'accept: application/zip' -H "Authorization: $TOKEN" --output $ZIP_NAME
+          unzip $ZIP_NAME
+          rm ./$ZIP_NAME
+
+          # push files to the repository
+          mv templateForZip_*/* .
+          git config --global user.email "devops@ibm.com"
+          git config --global user.name "IBM Cloud DevOps Toolchain Pipeline"
+          git add *
+          git commit -m "feat: terraform template files for workspace $(params.workspace-id)"
+          git push
+        else
+          echo "Terraform template files already downloaded and pushed to the repository"
+        fi
 
         # Record task results
         echo -n "$(params.repository)" > $(results.repo-url.path)
