@@ -103,6 +103,9 @@ spec:
         rm ./$ZIP_NAME
 
         # push files to the repository
+        mv templateForZip_*/* .
+        git config --global user.email "devops@ibm.com"
+        git config --global user.name "IBM Cloud DevOps Toolchain Pipeline"
         git add *
         git commit -m "feat: terraform template files for workspace $(params.workspace-id)"
         git push
