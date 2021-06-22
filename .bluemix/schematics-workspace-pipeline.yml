@@ -37,12 +37,13 @@ inputs:
     service: ${TEKTON_CATALOG_REPO}
     path: utils
 triggers:
-  - type: git
-    name: commit-push
-    eventListener: ${GIT_COMMIT_EVENT_LISTENER_NAME}
-    service: ${APP_REPO}
-    branch: master
-    events: { "push": true }
+  # we don't need the git trigger for now as we only need to run the pipeline manually once to d/l the initial terraform template files.
+  # - type: git
+  #   name: commit-push
+  #   eventListener: ${GIT_COMMIT_EVENT_LISTENER_NAME}
+  #   service: ${APP_REPO}
+  #   branch: master
+  #   events: { "push": true }
   - type: manual
     name: manual-run
     eventListener: manual-run
